@@ -1,12 +1,166 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>おすすめ商品まとめ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おすすめ商品まとめ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .card h2 {
+            font-size: 16px;
+            margin: 0 0 10px;
+            line-height: 1.5;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin: 8px 0;
+        }
+        .catchcopy {
+            font-size: 14px;
+            color: #444;
+            margin: 8px 0;
+        }
+        .shop {
+            font-size: 13px;
+            color: #666;
+            margin: 8px 0 16px;
+        }
+        .card a {
+            display: inline-block;
+            background: #bf0000;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+        .pagination {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            border: none;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .pagination button.active {
+            background: #bf0000;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>おすすめ商品まとめ</h1>
-  <p>まだ商品はありません。</p>
+    <h1>おすすめ商品まとめ❤</h1>
+    <div id="product-list" class="grid">
+        
+    <div class="card product-card">
+        <img src="https://thumbnail.image.rakuten.co.jp/@0_mall/annekor/cabinet/2025/ads094/imgrc0107533090.jpg?_ex=128x128" alt="＼大決算SALE開催中！／ ティッシュケース 【コロンとかわいい丸型】おしゃれ 北欧 収納 韓国 コンパクト かわいい インテリア トイレットペーパー ティッシュペーパー ホルダー ティッシュボックス ペーパーホルダー 丸 丸い 黒 白 シンプル ギフト プレゼント">
+        <h2>＼大決算SALE開催中！／ ティッシュケース 【コロンとかわいい丸型】おしゃれ 北欧 収納 韓国 コンパクト かわいい インテリア トイレットペーパー ティッシュペーパー ホルダー ティッシュボックス ペーパーホルダー 丸 丸い 黒 白 シンプル ギフト プレゼント</h2>
+        <p class="price">¥2,180</p>
+        <p class="catchcopy">ティッシュケース ティッシュボックス ティッシュカバー ティッシュ収納 おしゃれ 北欧 シンプル モダン 白 黒 軽い プラスチック 卓上 黒 グレー 新生活 一人暮らし 便利グッズ 滑り止め</p>
+        <p class="shop">ショップ: こだわりバッグ 雑貨 Annekor</p>
+        <a href="https://hb.afl.rakuten.co.jp/hgc/g00u3dym.q5qyz19f.g00u3dym.q5qz0832/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fannekor%2Fads_094%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fannekor%2Fi%2F10000199%2F&rafcid=wsc_i_is_6273d9a8-1c1e-454c-85c7-beafee18d648" target="_blank" rel="noopener noreferrer">楽天で見る</a>
+    </div>
+    
+    <div class="card product-card">
+        <img src="https://thumbnail.image.rakuten.co.jp/@0_mall/outgreenlife/cabinet/08095463/12091604/12125930/01.jpg?_ex=128x128" alt="＼当日発送／【楽天1位】 吊るせる圧縮袋 掃除機不要 圧縮アウターカバー 3サイズ スペース 40％ 節約 コートカバー シーズンオフ 衣替え 整理整頓 収納袋 窓付き 軽量 押し入れ収納 ほこり除け シンプル かわいい オシャレ 新生活 一人暮らし 便利グッズ ハンガーラック">
+        <h2>＼当日発送／【楽天1位】 吊るせる圧縮袋 掃除機不要 圧縮アウターカバー 3サイズ スペース 40％ 節約 コートカバー シーズンオフ 衣替え 整理整頓 収納袋 窓付き 軽量 押し入れ収納 ほこり除け シンプル かわいい オシャレ 新生活 一人暮らし 便利グッズ ハンガーラック</h2>
+        <p class="price">¥1,480</p>
+        <p class="catchcopy">【動画あり】 ハンガーのまま 圧縮 道具不要 圧縮袋 コート アウター 衣類 ハンガー 衣類圧縮 コンパクト クローゼット 押し入れ ロング ショート 冬物 洗える ベージュ ピンク グレー</p>
+        <p class="shop">ショップ: OutGreen Life</p>
+        <a href="https://hb.afl.rakuten.co.jp/hgc/g00tz2jm.q5qyzfcd.g00tz2jm.q5qz01c7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Foutgreenlife%2Fog000429%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Foutgreenlife%2Fi%2F10000685%2F&rafcid=wsc_i_is_6273d9a8-1c1e-454c-85c7-beafee18d648" target="_blank" rel="noopener noreferrer">楽天で見る</a>
+    </div>
+    
+    <div class="card product-card">
+        <img src="https://thumbnail.image.rakuten.co.jp/@0_mall/hyakuemon/cabinet/00672464/imgrc0086018474.jpg?_ex=128x128" alt="デスク 整理グッズ デスク整理 L">
+        <h2>デスク 整理グッズ デスク整理 L</h2>
+        <p class="price">¥121</p>
+        <p class="catchcopy">オフィス デスク 整理 グッズ</p>
+        <p class="shop">ショップ: ひゃくえもんプラス　楽天市場店</p>
+        <a href="https://hb.afl.rakuten.co.jp/hgc/g00platm.q5qyzf45.g00platm.q5qz0cb4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fhyakuemon%2Fnakaya-v193%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fhyakuemon%2Fi%2F10014348%2F&rafcid=wsc_i_is_6273d9a8-1c1e-454c-85c7-beafee18d648" target="_blank" rel="noopener noreferrer">楽天で見る</a>
+    </div>
+    
+    </div>
+    <div id="pagination" class="pagination"></div>
+
+    <script>
+        const itemsPerPage = 20;
+        const cards = Array.from(document.querySelectorAll(".product-card"));
+        const pagination = document.getElementById("pagination");
+        const totalPages = Math.ceil(cards.length / itemsPerPage);
+
+        function showPage(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+
+            cards.forEach((card, index) => {
+                if (index >= start && index < end) {
+                    card.classList.remove("hidden");
+                } else {
+                    card.classList.add("hidden");
+                }
+            });
+
+            const buttons = pagination.querySelectorAll("button");
+            buttons.forEach((btn, index) => {
+                if (index + 1 === page) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+        }
+
+        function createPagination() {
+            pagination.innerHTML = "";
+            if (totalPages <= 1) return;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement("button");
+                button.textContent = i;
+                button.addEventListener("click", () => showPage(i));
+                pagination.appendChild(button);
+            }
+        }
+
+        createPagination();
+        showPage(1);
+    </script>
 </body>
 </html>
