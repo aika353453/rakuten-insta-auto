@@ -328,7 +328,7 @@ html = f"""
     </style>
 </head>
 <body>
-    <h1>おすすめ商品まとめ 更新テスト</h1>
+    <h1>おすすめ商品まとめ❤</h1>
     <div id="product-list" class="grid">
         {cards_html}
     </div>
