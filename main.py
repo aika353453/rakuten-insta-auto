@@ -25,36 +25,16 @@ if not OPENAI_API_KEY:
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 os.makedirs("data", exist_ok=True)
-os.makedirs("site", exist_ok=True)
 os.makedirs("out", exist_ok=True)
+os.makedirs("images", exist_ok=True)
 
 PRODUCTS_FILE = "data/products.json"
 ITEMS_PER_PAGE = 20
-KEYWORD_COUNT = 3          # AIが出すキーワード数
-SEARCH_HITS_PER_KEYWORD = 2 # 1キーワードで取る件数
-MAX_NEW_PRODUCTS = 3       # 1回で追加する最大件数
+KEYWORD_COUNT = 3
+SEARCH_HITS_PER_KEYWORD = 2
+MAX_NEW_PRODUCTS = 3
 
-# ----------------------------
-# 既存商品読み込み
-# ----------------------------
-if os.path.exists(PRODUCTS_FILE):
-    with open(PRODUCTS_FILE, "r", encoding="utf-8") as f:
-        try:
-            existing_products = json.load(f)
-        except json.JSONDecodeError:
-            existing_products = []
-else:
-    existing_products = []
 
-existing_item_codes = {
-    product.get("item_code")
-    for product in existing_products
-    if product.get("item_code")
-}
-
-# ----------------------------
-# AIで検索キーワード生成
-# ----------------------------
 def generate_keywords() -> list[str]:
     prompt = """
 Instagramで紹介しやすく、楽天で商品検索しやすい日本語キーワードを3個だけ作ってください。
@@ -77,9 +57,7 @@ Instagramで紹介しやすく、楽天で商品検索しやすい日本語キ�
     keywords = [line.strip("・- 　") for line in text.splitlines() if line.strip()]
     return keywords[:KEYWORD_COUNT]
 
-# ----------------------------
-# 楽天API検索
-# ----------------------------
+
 def search_rakuten_items(keyword: str, hits: int = 2) -> list[dict]:
     url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601"
 
@@ -119,9 +97,30 @@ def search_rakuten_items(keyword: str, hits: int = 2) -> list[dict]:
     print(f"楽天検索をスキップしました: {keyword}")
     return []
 
-# ----------------------------
-# AIで投稿文案生成
-# ----------------------------
+
+def download_image(image_url: str, item_code: str):
+    if not image_url or not item_code:
+        return None
+
+    safe_name = item_code.replace(":", "_").replace("/", "_") + ".jpg"
+    file_path = os.path.join("images", safe_name)
+
+    if os.path.exists(file_path):
+        return file_path
+
+    try:
+        response = requests.get(image_url, timeout=20)
+        response.raise_for_status()
+
+        with open(file_path, "wb") as f:
+            f.write(response.content)
+
+        return file_path
+    except Exception as e:
+        print(f"画像保存失敗: {item_code} / {e}")
+        return None
+
+
 def generate_post_text(product: dict, keyword: str) -> str:
     item_name = product.get("item_name", "")
     catchcopy = product.get("catchcopy", "")
@@ -153,9 +152,22 @@ def generate_post_text(product: dict, keyword: str) -> str:
     )
     return response.output_text.strip()
 
-# ----------------------------
-# 商品収集
-# ----------------------------
+
+if os.path.exists(PRODUCTS_FILE):
+    with open(PRODUCTS_FILE, "r", encoding="utf-8") as f:
+        try:
+            existing_products = json.load(f)
+        except json.JSONDecodeError:
+            existing_products = []
+else:
+    existing_products = []
+
+existing_item_codes = {
+    product.get("item_code")
+    for product in existing_products
+    if product.get("item_code")
+}
+
 keywords = generate_keywords()
 print("AI検索キーワード:", keywords)
 
@@ -180,6 +192,7 @@ for keyword in keywords:
 
         medium_images = item.get("mediumImageUrls", [])
         image_url = medium_images[0].get("imageUrl") if medium_images else None
+        local_image_path = download_image(image_url, item_code)
 
         product = {
             "item_code": item_code,
@@ -192,6 +205,7 @@ for keyword in keywords:
             "review_average": item.get("reviewAverage"),
             "catchcopy": item.get("catchcopy"),
             "image_url": image_url,
+            "local_image_path": local_image_path,
             "source_keyword": keyword,
         }
 
@@ -203,15 +217,11 @@ for keyword in keywords:
 
     time.sleep(2)
 
-# 既存 + 新規
 all_products = existing_products + new_products
 
 with open(PRODUCTS_FILE, "w", encoding="utf-8") as f:
     json.dump(all_products, f, ensure_ascii=False, indent=2)
 
-# ----------------------------
-# HTML生成
-# ----------------------------
 cards_html = ""
 for product in all_products:
     image_html = ""
@@ -328,7 +338,7 @@ html = f"""
     </style>
 </head>
 <body>
-    <h1>おすすめ商品まとめ❤</h1>
+    <h1>おすすめ商品まとめ</h1>
     <div id="product-list" class="grid">
         {cards_html}
     </div>
@@ -380,15 +390,10 @@ html = f"""
 </body>
 </html>
 """
-import os
-print("実行中のフォルダ:", os.getcwd())
 
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
-# ----------------------------
-# 投稿候補テキスト生成
-# ----------------------------
 post_lines = []
 for i, product in enumerate(new_products, start=1):
     try:
@@ -407,6 +412,8 @@ for i, product in enumerate(new_products, start=1):
 検索キーワード: {product.get("source_keyword", "")}
 ショップ: {product.get("shop_name", "")}
 アフィリエイトURL: {product.get("affiliate_url", "")}
+画像URL: {product.get("image_url", "")}
+保存画像: {product.get("local_image_path", "")}
 
 投稿文案:
 {post_text}
